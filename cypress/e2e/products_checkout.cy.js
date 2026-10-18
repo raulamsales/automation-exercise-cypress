@@ -1,0 +1,40 @@
+beforeEach(() => {
+    cy.visit('/')
+})
+
+it('Test Case 8: Verify All Products and product detail page', () => {
+  cy.get('#slider').should('be.visible')
+  cy.get('a[href="/products"]').click()
+  cy.contains('h2', 'All Products').should('be.visible')
+  cy.get('.features_items .product-image-wrapper').should('be.visible')
+  cy.get('a[href="/product_details/1"]').click()
+  cy.get('.product-information h2').should('contain', 'Blue Top')
+  cy.get('.product-information p').first().should('contain', 'Category: Women > Tops')
+  cy.get('.product-information span').should('contain', 'Rs. 500')
+  cy.contains('p', 'Availability:').should('contain', 'In Stock')
+  cy.contains('p', 'Condition:').should('contain', 'New')
+  cy.contains('p', 'Brand:').should('contain', 'Polo')
+})
+
+it('Test Case 9: Search Product', () => {
+  cy.get('#slider').should('be.visible')
+  cy.get('a[href="/products"]').click()
+  cy.contains('h2', 'All Products').should('be.visible')
+  cy.get('#search_product').type('Blue Top')
+  cy.get('#submit_search').click()
+  cy.contains('h2', 'Searched Products').should('be.visible')
+  cy.get('.features_items .product-image-wrapper')
+    .should('be.visible')
+    .and('contain', 'Blue Top')
+})
+
+it('Test Case 10: Verify Subscription in home page', () => {
+  cy.get('#slider').should('be.visible')
+  cy.get('footer').scrollIntoView()
+  cy.contains('h2', 'Subscription').should('be.visible')
+  cy.get('#susbscribe_email').type(`raul${Date.now()}@example.com`)
+  cy.get('#subscribe').click()
+  cy.get('#success-subscribe')
+    .should('be.visible')
+    .and('contain', 'You have been successfully subscribed!')
+})

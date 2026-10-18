@@ -1,0 +1,52 @@
+const email = `raul${Date.now()}@example.com`
+
+beforeEach(() => {
+    cy.visit('/')
+})
+
+it('Test Case 1: Register User', () => {
+  cy.get('#slider').should('be.visible')
+  cy.get('a[href="/login"]').click()
+  cy.contains('h2', 'New User Signup!').should('be.visible')
+  cy.get('[data-qa="signup-name"]').type('Raul')
+  cy.get('[data-qa="signup-email"]').type(email)
+  cy.get('[data-qa="signup-button"]').click()
+  cy.contains('h2', 'Enter Account Information').should('be.visible')
+  cy.get('#id_gender1').check()
+  cy.get('[data-qa="password"]').type('Test@12345')
+  cy.get('[data-qa="days"]').select('10')
+  cy.get('[data-qa="months"]').select('5')
+  cy.get('[data-qa="years"]').select('1995')
+  cy.get('#newsletter').check()
+  cy.get('#optin').check()
+  cy.get('[data-qa="first_name"]').type('Raul')
+  cy.get('[data-qa="last_name"]').type('Sales')
+  cy.get('[data-qa="company"]').type('Test Company')
+  cy.get('[data-qa="address"]').type('123 Test Street')
+  cy.get('[data-qa="address2"]').type('Apartment 1')
+  cy.get('[data-qa="country"]').select('Canada')
+  cy.get('[data-qa="state"]').type('Ontario')
+  cy.get('[data-qa="city"]').type('Toronto')
+  cy.get('[data-qa="zipcode"]').type('M5V1A1')
+  cy.get('[data-qa="mobile_number"]').type('1234567890')
+  cy.get('[data-qa="create-account"]').click()
+  cy.get('[data-qa="account-created"]').should('be.visible')
+  cy.get('[data-qa="continue-button"]').click()
+  cy.contains('Logged in as').should('be.visible')
+  cy.contains('Logged in as Raul').should('be.visible')
+  cy.get('a[href="/delete_account"]', { timeout: 10000 }).click()
+  cy.get('[data-qa="account-deleted"]').should('be.visible')
+  cy.get('[data-qa="continue-button"]').click()
+})
+
+it('Test Case 5: Register User with existing email', () => {
+  cy.get('#slider').should('be.visible')
+  cy.get('a[href="/login"]').click()
+  cy.contains('h2', 'New User Signup!').should('be.visible')
+  cy.get('[data-qa="signup-name"]').type('Raul')
+  cy.get('[data-qa="signup-email"]').type('test@mail.com')
+  cy.get('[data-qa="signup-button"]').click()
+  cy.contains('Email Address already exist!').should('be.visible')
+})
+
+
