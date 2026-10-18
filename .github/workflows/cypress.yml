@@ -27,3 +27,20 @@ jobs:
 
       - name: Run Cypress tests
         run: npx cypress run --browser chrome --headless
+
+      - name: Merge Mochawesome reports
+        if: always()
+        run: npx mochawesome-merge cypress/reports/mochawesome*.json -o cypress/reports/merged-report.json
+
+      - name: Generate HTML report
+        if: always()
+        run: npx marge cypress/reports/merged-report.json --reportDir cypress/reports/html --reportFilename index
+
+      - name: Upload HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-html-report
+          path: cypress/reports/html/
+          if-no-files-found: warn
+          retention-days: 14
